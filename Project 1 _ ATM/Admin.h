@@ -89,82 +89,80 @@ public:
     class Node {
     public:
         T     data;
-        Node* next;
+        Node* pNext;
 
-        Node(const T& d) : data(d), next(nullptr) {}
+        Node(const T& d) : data(d), pNext(nullptr) {}
     };
 
-    Node* head;
-    Node* tail;
-    int   size;
+    Node* pHead;
+    Node* pTail;
+    int   iSize;
 
-    LinkedList() : head(nullptr), tail(nullptr), size(0) {}
+    LinkedList() : pHead(nullptr), pTail(nullptr), iSize(0) {}
 
-    ~LinkedList() {
-        clear();
-    }
+    ~LinkedList() { clear(); }
 
     void clear() {
-        while (head) {
-            Node* tmp = head;
-            head = head->next;
+        while (pHead) {
+            Node* tmp = pHead;
+            pHead = pHead->pNext;
             delete tmp;
         }
-        tail = nullptr;
-        size = 0;
+        pTail = nullptr;
+        iSize = 0;
     }
 
-    bool isEmpty() const { return head == nullptr; }
-    int  getSize() const { return size; }
+    bool isEmpty() const { return pHead == nullptr; }
+    int  getSize() const { return iSize; }
 
     // Thêm vào cuối
     void addTail(const T& val) {
         Node* pNew = new Node(val);
-        if (!head) {
-            head = tail = pNew;
+        if (!pHead) {
+            pHead = pTail = pNew;
         } else {
-            tail->next = pNew;
-            tail       = pNew;
+            pTail->pNext = pNew;
+            pTail        = pNew;
         }
-        ++size;
+        ++iSize;
     }
 
     // Hai hàm dưới chỉ compile được nếu T có getID()
     T* findByID(const string& id) {
-        Node* p = head;
+        Node* p = pHead;
         while (p) {
             if (p->data.getID() == id)
                 return &p->data;
-            p = p->next;
+            p = p->pNext;
         }
         return nullptr;
     }
 
     bool removeByID(const string& id) {
-        if (!head) return false;
+        if (!pHead) return false;
 
         // xóa đầu
-        if (head->data.getID() == id) {
-            Node* tmp = head;
-            head = head->next;
-            if (!head) tail = nullptr;
+        if (pHead->data.getID() == id) {
+            Node* tmp = pHead;
+            pHead = pHead->pNext;
+            if (!pHead) pTail = nullptr;
             delete tmp;
-            --size;
+            --iSize;
             return true;
         }
 
         // xóa giữa/cuối
-        Node* p = head;
-        while (p->next) {
-            if (p->next->data.getID() == id) {
-                Node* tmp = p->next;
-                p->next = tmp->next;
-                if (tmp == tail) tail = p;
+        Node* p = pHead;
+        while (p->pNext) {
+            if (p->pNext->data.getID() == id) {
+                Node* tmp = p->pNext;
+                p->pNext = tmp->pNext;
+                if (tmp == pTail) pTail = p;
                 delete tmp;
-                --size;
+                --iSize;
                 return true;
             }
-            p = p->next;
+            p = p->pNext;
         }
         return false;
     }
@@ -441,7 +439,7 @@ void Admin::xemDanhSachTaiKhoan()
     bool bEsc = false;
     setColor(7);
     int stt = 1;
-    for (AdminList::Node* p = list.head; p != nullptr; p = p->next)
+    for (AdminList::Node* p = list.pHead; p != nullptr; p = p->pNext)
     {
         const Admin &acc = p->data;
         cout << "\t\t" << left << setw(6)  << stt++
@@ -752,7 +750,7 @@ void Admin::xoaTaiKhoan()
             return;
         }
 
-        for (AdminList::Node* p = list.head; p != nullptr; p = p->next)
+        for (AdminList::Node* p = list.pHead; p != nullptr; p = p->pNext)
         {
             const Admin &acc = p->data;
             ofOut << acc.getID() << " " << acc.getPin() << " "
@@ -823,7 +821,7 @@ void Admin::moTaiKhoan()
     cout << "\t\t" << left << setw(6) << "STT" << setw(20) << "ID" << "\n";
     cout << "\t\t-----------------------------------\n";
 
-    for (AdminList::Node* p = list.head; p != nullptr; p = p->next)
+    for (AdminList::Node* p = list.pHead; p != nullptr; p = p->pNext)
     {
         if (p->data.getLocked())
         {
@@ -899,7 +897,7 @@ void Admin::moTaiKhoan()
         cout << "\n\t\tPin da duoc dat ve mac dinh (123456).\n";
 
         ofstream ofOut(FILE_THETU);
-        for (AdminList::Node* p = list.head; p != nullptr; p = p->next)
+        for (AdminList::Node* p = list.pHead; p != nullptr; p = p->pNext)
         {
             Admin &acc = p->data;
             ofOut << acc.getID() << " "

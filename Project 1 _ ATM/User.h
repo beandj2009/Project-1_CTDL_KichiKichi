@@ -38,7 +38,8 @@ public:
          const string& _strPin = " ",
          long long _llSoDu = 50000,
          bool _bLocked = false)
-        : strID(_strID), strPin(_strPin), llSoDu(_llSoDu), bLocked(_bLocked) {}
+        : strID(_strID), strPin(_strPin),
+          llSoDu(_llSoDu), bLocked(_bLocked) {}
 
     User(const User& u)
         : strID(u.strID), strPin(u.strPin),
@@ -118,7 +119,7 @@ inline void User::khoaTaiKhoan(const string& filePath, const string& strID)
 
     bool bFound = false;
 
-    for (UserNode* p = list.head; p != nullptr; p = p->next)
+    for (UserNode* p = list.pHead; p != nullptr; p = p->pNext)
     {
         if (p->data.getID() == strID)
         {
@@ -137,7 +138,7 @@ inline void User::khoaTaiKhoan(const string& filePath, const string& strID)
         return;
     }
 
-    for (UserNode* p = list.head; p != nullptr; p = p->next)
+    for (UserNode* p = list.pHead; p != nullptr; p = p->pNext)
     {
         ofOut << p->data.getID() << " "
               << p->data.getPin() << " "
@@ -317,7 +318,7 @@ inline bool User::dangNhapUI(const string& filePath)
         bool bFound  = false;
         bool bLocked = false;
 
-        for (UserNode* p = list.head; p != nullptr; p = p->next)
+        for (UserNode* p = list.pHead; p != nullptr; p = p->pNext)
         {
             if (p->data.getID() == strIDIn)
             {
@@ -383,7 +384,7 @@ inline bool User::dangNhapUI(const string& filePath)
         bool bPinMacDinh = false;
         bool bLocked     = false;
 
-        for (UserNode* p = list.head; p != nullptr; p = p->next)
+        for (UserNode* p = list.pHead; p != nullptr; p = p->pNext)
         {
             if (p->data.getID() == strIDIn)
             {
@@ -507,7 +508,7 @@ inline bool User::dangNhapUI(const string& filePath)
             ofstream ofOut(filePath);
             if (ofOut.is_open())
             {
-                for (UserNode* p = list2.head; p != nullptr; p = p->next)
+                for (UserNode* p = list2.pHead; p != nullptr; p = p->pNext)
                 {
                     if (p->data.getID() == strIDIn)
                         ofOut << p->data.getID() << " " << strNewPin
@@ -996,7 +997,7 @@ inline void User::chuyenTien(const string& strID)
         bool bExist    = false;
         bool bLockNhan = false;
 
-        for (UserNode* p = ds.head; p != nullptr; p = p->next)
+        for (UserNode* p = ds.pHead; p != nullptr; p = p->pNext)
         {
             if (p->data.getID() == strIDNhan)
             {
@@ -1335,7 +1336,7 @@ inline void User::doiMaPin(const string& strID)
     bool   bLocked       = false;
     string strPinHienTai = "";
 
-    for (UserNode* p = ds.head; p != nullptr; p = p->next)
+    for (UserNode* p = ds.pHead; p != nullptr; p = p->pNext)
     {
         if (p->data.getID() == strID)
         {
@@ -1501,7 +1502,7 @@ inline void User::doiMaPin(const string& strID)
         return;
     }
 
-    for (UserNode* p = ds.head; p != nullptr; p = p->next)
+    for (UserNode* p = ds.pHead; p != nullptr; p = p->pNext)
     {
         if (p->data.getID() == strID)
             ofOut << p->data.getID() << " " << strPinMoi
