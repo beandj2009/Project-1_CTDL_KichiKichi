@@ -13,13 +13,15 @@
 
 using namespace std;
 
-// ĐÃ CÓ template<typename T> class LinkedList TRONG Admin.h
-// Chỉ cần alias cho User
+// LinkedList<T> đã được định nghĩa trong Admin.h
 template<typename T>
 class LinkedList;
 
 class User;
+
+// Dùng lại LinkedList cho User
 using UserList = LinkedList<User>;
+using UserNode = LinkedList<User>::Node;
 
 /*===========================================================
 ||                          USER                           ||
@@ -79,7 +81,7 @@ public:
 *@Return:      none
 *@Attention:   Gọi clear() danh sách trước khi load dữ liệu mới.
 ********************************************************/
-void User::docDanhSachTheTu(const string& filePath, UserList& listOut)
+inline void User::docDanhSachTheTu(const string& filePath, UserList& listOut)
 {
     listOut.clear();
     ifstream ifUser(filePath);
@@ -109,14 +111,14 @@ void User::docDanhSachTheTu(const string& filePath, UserList& listOut)
 *@Return:      none
 *@Attention:   Ghi lại toàn bộ danh sách vào file sau khi khóa.
 ********************************************************/
-void User::khoaTaiKhoan(const string& filePath, const string& strID)
+inline void User::khoaTaiKhoan(const string& filePath, const string& strID)
 {
     UserList list;
     docDanhSachTheTu(filePath, list);
 
     bool bFound = false;
 
-    for (UserList::Node* p = list.head; p != nullptr; p = p->next)
+    for (UserNode* p = list.head; p != nullptr; p = p->next)
     {
         if (p->data.getID() == strID)
         {
@@ -135,7 +137,7 @@ void User::khoaTaiKhoan(const string& filePath, const string& strID)
         return;
     }
 
-    for (UserList::Node* p = list.head; p != nullptr; p = p->next)
+    for (UserNode* p = list.head; p != nullptr; p = p->next)
     {
         ofOut << p->data.getID() << " "
               << p->data.getPin() << " "
@@ -148,11 +150,11 @@ void User::khoaTaiKhoan(const string& filePath, const string& strID)
 *@Description: Cập nhật trạng thái (KHOA / ĐANG HOẠT ĐỘNG)
 *              trong file thông tin [ID].txt.
 *@Param:       strID – ID tài khoản;
-*             bLock – true nếu khóa, false nếu mở khóa.
+*              bLock – true nếu khóa, false nếu mở khóa.
 *@Return:      none
 *@Attention:   Nếu không mở được file [ID].txt thì hàm return luôn.
 ********************************************************/
-void User::capNhatTrangThaiFileInfo(const string& strID, bool bLock)
+inline void User::capNhatTrangThaiFileInfo(const string& strID, bool bLock)
 {
     string infoFile = strID + ".txt";
     ifstream fin(infoFile.c_str());
@@ -202,7 +204,7 @@ void User::capNhatTrangThaiFileInfo(const string& strID, bool bLock)
 *@Return:      none
 *@Attention:   Gọi các chức năng xem/rút/chuyển/đổi PIN.
 ********************************************************/
-void User::menuUser(const string& strID)
+inline void User::menuUser(const string& strID)
 {
     int    iChoice = -1;
     string strInput;
@@ -286,7 +288,7 @@ void User::menuUser(const string& strID)
 *@Return:      true nếu đăng nhập thành công, false nếu lỗi/khóa.
 *@Attention:   Sai PIN 3 lần sẽ tự động khóa tài khoản và cập nhật file.
 ********************************************************/
-bool User::dangNhapUI(const string& filePath)
+inline bool User::dangNhapUI(const string& filePath)
 {
     string strIDIn, strPinIn;
 
@@ -315,7 +317,7 @@ bool User::dangNhapUI(const string& filePath)
         bool bFound  = false;
         bool bLocked = false;
 
-        for (UserList::Node* p = list.head; p != nullptr; p = p->next)
+        for (UserNode* p = list.head; p != nullptr; p = p->next)
         {
             if (p->data.getID() == strIDIn)
             {
@@ -381,7 +383,7 @@ bool User::dangNhapUI(const string& filePath)
         bool bPinMacDinh = false;
         bool bLocked     = false;
 
-        for (UserList::Node* p = list.head; p != nullptr; p = p->next)
+        for (UserNode* p = list.head; p != nullptr; p = p->next)
         {
             if (p->data.getID() == strIDIn)
             {
@@ -421,12 +423,10 @@ bool User::dangNhapUI(const string& filePath)
             }
             else
             {
-
                 Admin::setColor(4);
                 cout << "\t\tBan da nhap sai PIN 3 lan.\n";
                 cout << "\t\tTai khoan cua ban da bi KHOA do nhap sai PIN 3 lan.\n";
                 Admin::setColor(7);
-
 
                 khoaTaiKhoan(filePath, strIDCanKhoa);
                 capNhatTrangThaiFileInfo(strIDCanKhoa, true);
@@ -507,7 +507,7 @@ bool User::dangNhapUI(const string& filePath)
             ofstream ofOut(filePath);
             if (ofOut.is_open())
             {
-                for (UserList::Node* p = list2.head; p != nullptr; p = p->next)
+                for (UserNode* p = list2.head; p != nullptr; p = p->next)
                 {
                     if (p->data.getID() == strIDIn)
                         ofOut << p->data.getID() << " " << strNewPin
@@ -578,7 +578,7 @@ bool User::dangNhapUI(const string& filePath)
 *@Return:      none
 *@Attention:   Đọc từ file [ID].txt và in ra console (bỏ header).
 ********************************************************/
-void User::xemThongTinTaiKhoan(const string& strID)
+inline void User::xemThongTinTaiKhoan(const string& strID)
 {
     system("cls");
 
@@ -648,7 +648,7 @@ void User::xemThongTinTaiKhoan(const string& strID)
 *@Return:      none
 *@Attention:   Số tiền rút là bội số 50000 và vẫn phải còn ≥ 50000.
 ********************************************************/
-void User::rutTien(const string& strID)
+inline void User::rutTien(const string& strID)
 {
     system("cls");
     Admin::setColor(9);
@@ -860,7 +860,7 @@ void User::rutTien(const string& strID)
 *@Attention:   Số tiền là bội số 50000, giữ lại tối thiểu 50000,
 *              kiểm tra tồn tại & trạng thái tài khoản nhận.
 ********************************************************/
-void User::chuyenTien(const string& strID)
+inline void User::chuyenTien(const string& strID)
 {
     system("cls");
     Admin::setColor(9);
@@ -996,7 +996,7 @@ void User::chuyenTien(const string& strID)
         bool bExist    = false;
         bool bLockNhan = false;
 
-        for (UserList::Node* p = ds.head; p != nullptr; p = p->next)
+        for (UserNode* p = ds.head; p != nullptr; p = p->next)
         {
             if (p->data.getID() == strIDNhan)
             {
@@ -1253,7 +1253,7 @@ void User::chuyenTien(const string& strID)
 *@Return:      none
 *@Attention:   Đọc file LichSu[ID].txt và in từng dòng.
 ********************************************************/
-void User::xemNoiDungGiaoDich(const string& strID)
+inline void User::xemNoiDungGiaoDich(const string& strID)
 {
     system("cls");
     Admin::setColor(9);
@@ -1313,7 +1313,7 @@ void User::xemNoiDungGiaoDich(const string& strID)
 *@Attention:   Kiểm tra PIN hiện tại; PIN mới phải 6 chữ số,
 *              khác PIN cũ và khác PIN mặc định 123456.
 ********************************************************/
-void User::doiMaPin(const string& strID)
+inline void User::doiMaPin(const string& strID)
 {
     system("cls");
     Admin::setColor(9);
@@ -1335,7 +1335,7 @@ void User::doiMaPin(const string& strID)
     bool   bLocked       = false;
     string strPinHienTai = "";
 
-    for (UserList::Node* p = ds.head; p != nullptr; p = p->next)
+    for (UserNode* p = ds.head; p != nullptr; p = p->next)
     {
         if (p->data.getID() == strID)
         {
@@ -1501,7 +1501,7 @@ void User::doiMaPin(const string& strID)
         return;
     }
 
-    for (UserList::Node* p = ds.head; p != nullptr; p = p->next)
+    for (UserNode* p = ds.head; p != nullptr; p = p->next)
     {
         if (p->data.getID() == strID)
             ofOut << p->data.getID() << " " << strPinMoi

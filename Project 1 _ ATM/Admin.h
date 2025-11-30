@@ -86,9 +86,12 @@ public:
 template<typename T>
 class LinkedList {
 public:
-    struct Node {
+    // Node chuyển sang class cho đúng OOP
+    class Node {
+    public:
         T     data;
         Node* next;
+
         Node(const T& d) : data(d), next(nullptr) {}
     };
 
