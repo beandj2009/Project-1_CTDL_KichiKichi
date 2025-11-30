@@ -1,0 +1,9 @@
+============================================
+||             THONG TIN TAI KHOAN        ||
+============================================
+ID: 31246753248795
+Ten: Le Hien
+So du: 100000
+Loai tien te: VND
+PIN mac dinh: 123456
+Trang thai: DANG HOAT DONG

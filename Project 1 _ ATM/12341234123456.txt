@@ -1,0 +1,9 @@
+============================================
+||             THONG TIN TAI KHOAN        ||
+============================================
+ID: 12341234123456
+Ten: N
+So du: 50000
+Loai tien te: VND
+PIN mac dinh: 123456
+Trang thai: DANG HOAT DONG

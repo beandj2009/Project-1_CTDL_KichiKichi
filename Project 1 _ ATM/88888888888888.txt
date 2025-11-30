@@ -1,0 +1,9 @@
+============================================
+||             THONG TIN TAI KHOAN        ||
+============================================
+ID: 88888888888888
+Ten: Nguyen N
+So du: 2000000
+Loai tien te: VND
+PIN mac dinh: 123456
+Trang thai: DANG HOAT DONG

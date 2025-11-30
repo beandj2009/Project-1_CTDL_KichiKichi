@@ -1,0 +1,5 @@
+=== Lich su giao dich cua tai khoan 11111111111111 ===
+Tao luc: 29/11/2025 23:21:56
+Nhan tu: 33333333333333 - Bui Phu Loc | So tien: 50000 VND | Thoi gian: 30/11/2025 00:42:08
+Rut tien: 50000 VND | So du sau rut: 5000000 VND | Thoi gian: 30/11/2025 01:18:54
+Nhan tu: 99999999999999 - Nguyen A | So tien: 50000 VND | Thoi gian: 30/11/2025 16:35:02

@@ -1,0 +1,9 @@
+============================================
+||             THONG TIN TAI KHOAN        ||
+============================================
+ID: 22222222222222
+Ten: Nguyen Van A
+So du: 24500000
+Loai tien te: VND
+PIN: 123456
+Trang thai: KHOA

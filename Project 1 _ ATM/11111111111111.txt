@@ -1,0 +1,9 @@
+============================================
+||             THONG TIN TAI KHOAN        ||
+============================================
+ID: 11111111111111
+Ten: Tran Huynh Dang Khoa
+So du: 5050000
+Loai tien te: VND
+PIN: 111111
+Trang thai: KHOA

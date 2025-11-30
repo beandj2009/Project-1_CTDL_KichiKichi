@@ -1,0 +1,9 @@
+============================================
+||             THONG TIN TAI KHOAN        ||
+============================================
+ID: 77777777777777
+Ten: Pham Huy Hoang
+So du: 389000 VND
+Loai tien te: VND
+PIN mac dinh: 123456
+Trang thai: DANG HOAT DONG

@@ -1,0 +1,9 @@
+============================================
+||             THONG TIN TAI KHOAN        ||
+============================================
+ID: 33333333333333
+Ten: Bui Phu Loc
+So du: 32000000
+Loai tien te: VND
+PIN: 333333
+Trang thai: DANG HOAT DONG

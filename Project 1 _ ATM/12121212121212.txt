@@ -1,0 +1,9 @@
+============================================
+||             THONG TIN TAI KHOAN        ||
+============================================
+ID: 12121212121212
+Ten: Nguyen Be Duy
+So du: 50000
+Loai tien te: VND
+PIN mac dinh: 123456
+Trang thai: DANG HOAT DONG

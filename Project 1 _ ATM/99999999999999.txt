@@ -1,0 +1,9 @@
+============================================
+||             THONG TIN TAI KHOAN        ||
+============================================
+ID: 99999999999999
+Ten: Nguyen A
+So du: 1900000
+Loai tien te: VND
+PIN: 111111
+Trang thai: DANG HOAT DONG

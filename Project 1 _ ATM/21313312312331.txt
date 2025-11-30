@@ -1,0 +1,9 @@
+============================================
+||             THONG TIN TAI KHOAN        ||
+============================================
+ID: 21313312312331
+Ten: HaiBang
+So du: 5000000
+Loai tien te: VND
+PIN mac dinh: 123456
+Trang thai: DANG HOAT DONG

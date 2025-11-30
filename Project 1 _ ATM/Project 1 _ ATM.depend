@@ -1,0 +1,31 @@
+# depslib dependency file v1.0
+1764488114 source:d:\code\ctdl_project\project 1 _ atm\main.cpp
+	<iostream>
+	"Admin.h"
+	"User.h"
+
+1764519279 d:\code\ctdl_project\project 1 _ atm\admin.h
+	<iostream>
+	<iomanip>
+	<fstream>
+	<string>
+	<vector>
+	<conio.h>
+	<cctype>
+	<ctime>
+	<cstdio>
+	<windows.h>
+
+1764519256 d:\code\ctdl_project\project 1 _ atm\user.h
+	"Admin.h"
+	<iostream>
+	<iomanip>
+	<fstream>
+	<string>
+	<vector>
+	<conio.h>
+	<cctype>
+	<ctime>
+	<cstdio>
+	<windows.h>
+

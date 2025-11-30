@@ -1,0 +1,9 @@
+============================================
+||             THONG TIN TAI KHOAN        ||
+============================================
+ID: 44444444444444
+Ten: Le Quynh Giang
+So du: 35000000
+Loai tien te: VND
+PIN: 444444
+Trang thai: DANG HOAT DONG
