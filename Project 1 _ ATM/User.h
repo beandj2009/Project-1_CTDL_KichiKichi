@@ -13,10 +13,13 @@
 
 using namespace std;
 
+// ĐÃ CÓ template<typename T> class LinkedList TRONG Admin.h
+// Chỉ cần alias cho User
+template<typename T>
+class LinkedList;
 
 class User;
-class UserNode;
-class UserList;
+using UserList = LinkedList<User>;
 
 /*===========================================================
 ||                          USER                           ||
@@ -66,89 +69,6 @@ public:
     static void doiMaPin(const string& strID);
 };
 
-class UserNode {
-public:
-    User     data;
-    UserNode *next;
-
-    UserNode(const User& u) : data(u), next(nullptr) {}
-};
-
-class UserList {
-    friend class User;   // cho phép User truy cập head/tail
-
-private:
-    UserNode* head;
-    UserNode* tail;
-    int       size;
-
-public:
-    UserList() : head(nullptr), tail(nullptr), size(0) {}
-
-    ~UserList() { clear(); }
-
-    void clear() {
-        while (head) {
-            UserNode* tmp = head;
-            head = head->next;
-            delete tmp;
-        }
-        tail = nullptr;
-        size = 0;
-    }
-
-    bool isEmpty() const { return head == nullptr; }
-    int  getSize() const { return size; }
-
-    void addTail(const User& u) {
-        UserNode* pNew = new UserNode(u);
-        if (!head) {
-            head = tail = pNew;
-        } else {
-            tail->next = pNew;
-            tail       = pNew;
-        }
-        size++;
-    }
-
-    User* findByID(const string& id) {
-        UserNode* p = head;
-        while (p) {
-            if (p->data.getID() == id)
-                return &p->data;
-            p = p->next;
-        }
-        return nullptr;
-    }
-
-    bool removeByID(const string& id) {
-        if (!head) return false;
-
-        if (head->data.getID() == id) {
-            UserNode* tmp = head;
-            head = head->next;
-            if (!head) tail = nullptr;
-            delete tmp;
-            size--;
-            return true;
-        }
-
-        UserNode* p = head;
-        while (p->next) {
-            if (p->next->data.getID() == id) {
-                UserNode* tmp = p->next;
-                p->next = tmp->next;
-                if (tmp == tail) tail = p;
-                delete tmp;
-                size--;
-                return true;
-            }
-            p = p->next;
-        }
-        return false;
-    }
-};
-
 
 /******** Một số hàm bổ trợ User *********/
 
@@ -196,7 +116,7 @@ void User::khoaTaiKhoan(const string& filePath, const string& strID)
 
     bool bFound = false;
 
-    for (UserNode* p = list.head; p != nullptr; p = p->next)
+    for (UserList::Node* p = list.head; p != nullptr; p = p->next)
     {
         if (p->data.getID() == strID)
         {
@@ -215,7 +135,7 @@ void User::khoaTaiKhoan(const string& filePath, const string& strID)
         return;
     }
 
-    for (UserNode* p = list.head; p != nullptr; p = p->next)
+    for (UserList::Node* p = list.head; p != nullptr; p = p->next)
     {
         ofOut << p->data.getID() << " "
               << p->data.getPin() << " "
@@ -395,7 +315,7 @@ bool User::dangNhapUI(const string& filePath)
         bool bFound  = false;
         bool bLocked = false;
 
-        for (UserNode* p = list.head; p != nullptr; p = p->next)
+        for (UserList::Node* p = list.head; p != nullptr; p = p->next)
         {
             if (p->data.getID() == strIDIn)
             {
@@ -461,7 +381,7 @@ bool User::dangNhapUI(const string& filePath)
         bool bPinMacDinh = false;
         bool bLocked     = false;
 
-        for (UserNode* p = list.head; p != nullptr; p = p->next)
+        for (UserList::Node* p = list.head; p != nullptr; p = p->next)
         {
             if (p->data.getID() == strIDIn)
             {
@@ -587,7 +507,7 @@ bool User::dangNhapUI(const string& filePath)
             ofstream ofOut(filePath);
             if (ofOut.is_open())
             {
-                for (UserNode* p = list2.head; p != nullptr; p = p->next)
+                for (UserList::Node* p = list2.head; p != nullptr; p = p->next)
                 {
                     if (p->data.getID() == strIDIn)
                         ofOut << p->data.getID() << " " << strNewPin
@@ -1076,7 +996,7 @@ void User::chuyenTien(const string& strID)
         bool bExist    = false;
         bool bLockNhan = false;
 
-        for (UserNode* p = ds.head; p != nullptr; p = p->next)
+        for (UserList::Node* p = ds.head; p != nullptr; p = p->next)
         {
             if (p->data.getID() == strIDNhan)
             {
@@ -1415,7 +1335,7 @@ void User::doiMaPin(const string& strID)
     bool   bLocked       = false;
     string strPinHienTai = "";
 
-    for (UserNode* p = ds.head; p != nullptr; p = p->next)
+    for (UserList::Node* p = ds.head; p != nullptr; p = p->next)
     {
         if (p->data.getID() == strID)
         {
@@ -1581,7 +1501,7 @@ void User::doiMaPin(const string& strID)
         return;
     }
 
-    for (UserNode* p = ds.head; p != nullptr; p = p->next)
+    for (UserList::Node* p = ds.head; p != nullptr; p = p->next)
     {
         if (p->data.getID() == strID)
             ofOut << p->data.getID() << " " << strPinMoi

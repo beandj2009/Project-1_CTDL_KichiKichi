@@ -15,8 +15,16 @@ using namespace std;
 const string FILE_THETU  = "TheTu.txt";
 const string FILE_ADMIN  = "Admin.txt";
 
-class AdminList;
+//================= KHAI BÁO TRƯỚC =================
+class Admin;
 
+// Template danh sách liên kết dùng chung (Admin, User,...)
+template<typename T>
+class LinkedList;
+
+using AdminList = LinkedList<Admin>;
+
+//================= LỚP ADMIN ======================
 class Admin {
 private:
     string strID;
@@ -54,7 +62,9 @@ public:
     static void   setColor(int iColor);
 
     static vector<Admin> docDanhSachAdmin(const string& filePath);
-    static bool kiemTraDangNhap(const string& filePath, const string& strIDIn, const string& strPinIn);
+    static bool kiemTraDangNhap(const string& filePath,
+                                const string& strIDIn,
+                                const string& strPinIn);
 
     static string pinHidden();
 
@@ -72,32 +82,29 @@ public:
     static bool dangNhapUI(const string& filePath);
 };
 
-class AdminNode {
+//================= TEMPLATE LINKED LIST DÙNG CHUNG =================
+template<typename T>
+class LinkedList {
 public:
-    Admin     data;
-    AdminNode *next;
+    struct Node {
+        T     data;
+        Node* next;
+        Node(const T& d) : data(d), next(nullptr) {}
+    };
 
-    AdminNode(const Admin& a) : data(a), next(nullptr) {}
-};
+    Node* head;
+    Node* tail;
+    int   size;
 
-class AdminList {
-    friend class Admin;
+    LinkedList() : head(nullptr), tail(nullptr), size(0) {}
 
-private:
-    AdminNode* head;
-    AdminNode* tail;
-    int        size;
-
-public:
-    AdminList() : head(nullptr), tail(nullptr), size(0) {}
-
-    ~AdminList() {
+    ~LinkedList() {
         clear();
     }
 
     void clear() {
         while (head) {
-            AdminNode* tmp = head;
+            Node* tmp = head;
             head = head->next;
             delete tmp;
         }
@@ -108,19 +115,21 @@ public:
     bool isEmpty() const { return head == nullptr; }
     int  getSize() const { return size; }
 
-    void addTail(const Admin& a) {
-        AdminNode* pNew = new AdminNode(a);
+    // Thêm vào cuối
+    void addTail(const T& val) {
+        Node* pNew = new Node(val);
         if (!head) {
             head = tail = pNew;
         } else {
             tail->next = pNew;
             tail       = pNew;
         }
-        size++;
+        ++size;
     }
 
-    Admin* findByID(const string& id) {
-        AdminNode* p = head;
+    // Hai hàm dưới chỉ compile được nếu T có getID()
+    T* findByID(const string& id) {
+        Node* p = head;
         while (p) {
             if (p->data.getID() == id)
                 return &p->data;
@@ -134,23 +143,23 @@ public:
 
         // xóa đầu
         if (head->data.getID() == id) {
-            AdminNode* tmp = head;
+            Node* tmp = head;
             head = head->next;
             if (!head) tail = nullptr;
             delete tmp;
-            size--;
+            --size;
             return true;
         }
 
         // xóa giữa/cuối
-        AdminNode* p = head;
+        Node* p = head;
         while (p->next) {
             if (p->next->data.getID() == id) {
-                AdminNode* tmp = p->next;
+                Node* tmp = p->next;
                 p->next = tmp->next;
                 if (tmp == tail) tail = p;
                 delete tmp;
-                size--;
+                --size;
                 return true;
             }
             p = p->next;
@@ -159,8 +168,7 @@ public:
     }
 };
 
-
-/************* CÁC HÀM BỔ TRỢ CHO ADMIN *******************/
+//================= CÁC HÀM THÀNH VIÊN ADMIN =================
 
 /*******************************************************
 *@Description: Nhập chuỗi ký tự, có thể nhấn ESC để hủy thao tác.
@@ -308,7 +316,9 @@ vector<Admin> Admin::docDanhSachAdmin(const string& filePath)
 *              strPinIn – PIN nhập vào.
 *@Return:      true nếu ID và PIN trùng với dữ liệu trong file.
 ********************************************************/
-bool Admin::kiemTraDangNhap(const string& filePath, const string& strIDIn, const string& strPinIn)
+bool Admin::kiemTraDangNhap(const string& filePath,
+                            const string& strIDIn,
+                            const string& strPinIn)
 {
     vector<Admin> vList = docDanhSachAdmin(filePath);
 
@@ -429,7 +439,7 @@ void Admin::xemDanhSachTaiKhoan()
     bool bEsc = false;
     setColor(7);
     int stt = 1;
-    for (AdminNode* p = list.head; p != nullptr; p = p->next)
+    for (AdminList::Node* p = list.head; p != nullptr; p = p->next)
     {
         const Admin &acc = p->data;
         cout << "\t\t" << left << setw(6)  << stt++
@@ -653,7 +663,7 @@ void Admin::themTaiKhoan()
 
     setColor(12);
     cout << "\n\t\tDang quay ve MENU ADMIN...\n";
-    Sleep(2000);
+    Sleep(3000);
 }
 
 /*******************************************************
@@ -740,7 +750,7 @@ void Admin::xoaTaiKhoan()
             return;
         }
 
-        for (AdminNode* p = list.head; p != nullptr; p = p->next)
+        for (AdminList::Node* p = list.head; p != nullptr; p = p->next)
         {
             const Admin &acc = p->data;
             ofOut << acc.getID() << " " << acc.getPin() << " "
@@ -811,7 +821,7 @@ void Admin::moTaiKhoan()
     cout << "\t\t" << left << setw(6) << "STT" << setw(20) << "ID" << "\n";
     cout << "\t\t-----------------------------------\n";
 
-    for (AdminNode* p = list.head; p != nullptr; p = p->next)
+    for (AdminList::Node* p = list.head; p != nullptr; p = p->next)
     {
         if (p->data.getLocked())
         {
@@ -887,7 +897,7 @@ void Admin::moTaiKhoan()
         cout << "\n\t\tPin da duoc dat ve mac dinh (123456).\n";
 
         ofstream ofOut(FILE_THETU);
-        for (AdminNode* p = list.head; p != nullptr; p = p->next)
+        for (AdminList::Node* p = list.head; p != nullptr; p = p->next)
         {
             Admin &acc = p->data;
             ofOut << acc.getID() << " "
