@@ -86,7 +86,6 @@ public:
 template<typename T>
 class LinkedList {
 public:
-    // Node chuyển sang class cho đúng OOP
     class Node {
     public:
         T     data;
